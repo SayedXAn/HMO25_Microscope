@@ -4,6 +4,7 @@ using UnityEngine.Video;
 using System.Linq;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class LoadLocalVideo : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class LoadLocalVideo : MonoBehaviour
     [System.NonSerialized] public string latestFile = "";
     [System.NonSerialized] Texture2D loadedLocalImage;
     [SerializeField] Image backgroundImage;
+    public TMP_InputField rfid_IF;
     void Start()
     {
         //get data dir 
@@ -23,6 +25,8 @@ public class LoadLocalVideo : MonoBehaviour
         GetVideosFromLocal();
         CheckIfAnyBGPhoto();
         StopVideoAnytime();
+        //KeepTheIFActive();
+        InvokeRepeating("KeepTheIFActive", 0.5f, 0.5f);
     }
 
     void GetVideosFromLocal()
@@ -45,17 +49,43 @@ public class LoadLocalVideo : MonoBehaviour
         {
             Application.Quit();
         }
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             PlayVideo(0);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             PlayVideo(1);
         }
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             StopVideoAnytime();
+        }
+    }
+
+    public void CheckInputField()
+    {
+        //0014059262
+        //0014063020
+        //0014058627
+
+        if(rfid_IF.text.Length == 10)
+        {
+            Debug.Log("rfid: " + rfid_IF.text);
+            string rfid = rfid_IF.text;
+            if (rfid == "0014059262")
+            {
+                PlayVideo(0);
+            }
+            else if(rfid == "0014063020")
+            {
+                PlayVideo(1);
+            }
+            else if(rfid == "0014058627")
+            {
+                StopVideoAnytime();
+            }
+            KeepTheIFActive();
         }
     }
 
@@ -101,13 +131,6 @@ public class LoadLocalVideo : MonoBehaviour
             return;
         }
 
-        // Find the latest image file
-        //latestFile = Directory.GetFiles(directoryPath, "*.jpg")
-        //                      .Concat(Directory.GetFiles(directoryPath, "*.png"))
-        //                      .OrderByDescending(File.GetCreationTime)
-        //                      .FirstOrDefault();
-        //for selecting latest file from multiple files
-
         latestFile = directoryPath + "/bg.jpg";
 
         if (string.IsNullOrEmpty(latestFile))
@@ -127,6 +150,15 @@ public class LoadLocalVideo : MonoBehaviour
             backgroundImage.type = Image.Type.Simple;
             backgroundImage.preserveAspect = true;
 
+        }
+    }
+
+    public void KeepTheIFActive()
+    {
+        if (!rfid_IF.isFocused)
+        {
+            rfid_IF.text = "";
+            rfid_IF.ActivateInputField();
         }
     }
 }
