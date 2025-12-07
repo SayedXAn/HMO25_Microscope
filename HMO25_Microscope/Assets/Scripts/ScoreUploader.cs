@@ -35,7 +35,7 @@ public class ScoreUploader : MonoBehaviour
             scoreSlider.interactable = true;
             submitButton.interactable = true;
             SyncSliderWithIF();
-            SyncDropDownWithGID();
+            //SyncDropDownWithGID();
         }
     }
 
@@ -97,10 +97,10 @@ public class ScoreUploader : MonoBehaviour
     {
         score_IF.text = scoreSlider.value.ToString();
     }
-    public void SyncDropDownWithGID()
-    {
-        gameID = gameIDDropdown.value;
-    }
+    //public void SyncDropDownWithGID()
+    //{
+    //    gameID = gameIDDropdown.value;
+    //}
 }
 
 [System.Serializable]
