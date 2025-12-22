@@ -225,6 +225,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 69146635}
+        m_TargetAssemblyTypeName: LoadLocalVideo, Assembly-CSharp
+        m_MethodName: RFID_On
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4953664088572128977}
+        m_TargetAssemblyTypeName: ScoreUploader, Assembly-CSharp
+        m_MethodName: ResetIFTexts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &52683940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1503,6 +1527,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3022762621049035806}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 69146635}
+        m_TargetAssemblyTypeName: LoadLocalVideo, Assembly-CSharp
+        m_MethodName: RFID_On
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3562,6 +3598,7 @@ MonoBehaviour:
   gameIDDropdown: {fileID: 80787035188779266}
   submitButton: {fileID: 714133690690098765}
   statusText: {fileID: 57265059371027360}
+  scoreText: {fileID: 6641077283573103699}
 --- !u!222 &5005642171607209156
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4835,7 +4872,7 @@ GameObject:
   - component: {fileID: 1238147491756124738}
   - component: {fileID: 714133690690098765}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ConfirmButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

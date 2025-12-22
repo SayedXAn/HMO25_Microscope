@@ -15,10 +15,11 @@ public class LoadLocalVideo : MonoBehaviour
     public VideoPlayer vp2;
     public RenderTexture rt, rt2;
     private int currentVideoIndex = -1;
-    [System.NonSerialized] public string latestFile = "";
-    [System.NonSerialized] Texture2D loadedLocalImage;
+    //[System.NonSerialized] public string latestFile = "";
+    //[System.NonSerialized] Texture2D loadedLocalImage;
     [SerializeField] Image backgroundImage;
     public TMP_InputField rfid_IF;
+    private bool rfidOn = false;
     void Start()
     {
         if(Display.displays.Length > 1)
@@ -28,13 +29,14 @@ public class LoadLocalVideo : MonoBehaviour
                 Display.displays[i].Activate();
             }
         }
+        InvokeRepeating(nameof(KeepTheIFActive), 1f, 0.5f);
         //get data dir
         Debug.Log($"Local path: {Application.dataPath}");
         GetVideosFromLocal();
-        CheckIfAnyBGPhoto();
+        //CheckIfAnyBGPhoto();
         StopVideoAnytime();
         //KeepTheIFActive();
-        InvokeRepeating("KeepTheIFActive", 0.5f, 0.5f);
+        
     }
 
     void GetVideosFromLocal()
@@ -184,43 +186,55 @@ public class LoadLocalVideo : MonoBehaviour
        
     }
 
-    public void CheckIfAnyBGPhoto()
-    {
-        string directoryPath = $"{Application.dataPath}/Videos";
-        if (!Directory.Exists(directoryPath))
-        {
-            Debug.LogError("Photos directory not found: " + directoryPath);
-            return;
-        }
+    //public void CheckIfAnyBGPhoto()
+    //{
+    //    string directoryPath = $"{Application.dataPath}/Videos";
+    //    if (!Directory.Exists(directoryPath))
+    //    {
+    //        Debug.LogError("Photos directory not found: " + directoryPath);
+    //        return;
+    //    }
 
-        latestFile = directoryPath + "/bg.jpg";
+    //    latestFile = directoryPath + "/bg.jpg";
 
-        if (string.IsNullOrEmpty(latestFile))
-        {
-            Debug.LogError("No photo found to process.");
-            backgroundImage.gameObject.SetActive(false);
-            return;
-        }
-        else
-        {
-            backgroundImage.gameObject.SetActive(true);
-            byte[] bytes = File.ReadAllBytes(latestFile);
-            loadedLocalImage = new Texture2D(2, 2);
-            loadedLocalImage.LoadImage(bytes);
-            Sprite sprite = Sprite.Create(loadedLocalImage, new Rect(0, 0, loadedLocalImage.width, loadedLocalImage.height), new Vector2(0.5f, 0.5f));
-            backgroundImage.sprite = sprite;
-            backgroundImage.type = Image.Type.Simple;
-            backgroundImage.preserveAspect = true;
+    //    if (string.IsNullOrEmpty(latestFile))
+    //    {
+    //        Debug.LogError("No photo found to process.");
+    //        backgroundImage.gameObject.SetActive(false);
+    //        return;
+    //    }
+    //    else
+    //    {
+    //        backgroundImage.gameObject.SetActive(true);
+    //        byte[] bytes = File.ReadAllBytes(latestFile);
+    //        loadedLocalImage = new Texture2D(2, 2);
+    //        loadedLocalImage.LoadImage(bytes);
+    //        Sprite sprite = Sprite.Create(loadedLocalImage, new Rect(0, 0, loadedLocalImage.width, loadedLocalImage.height), new Vector2(0.5f, 0.5f));
+    //        backgroundImage.sprite = sprite;
+    //        backgroundImage.type = Image.Type.Simple;
+    //        backgroundImage.preserveAspect = true;
 
-        }
-    }
+    //    }
+    //}
 
     public void KeepTheIFActive()
     {
+        if(rfidOn)
+        {
+            return;
+        }
         if (!rfid_IF.isFocused)
         {
             rfid_IF.text = "";
             rfid_IF.ActivateInputField();
+        }
+    }
+    public void RFID_On(bool nf)
+    {
+        rfidOn = nf;
+        if(nf)
+        {
+            
         }
     }
 }
