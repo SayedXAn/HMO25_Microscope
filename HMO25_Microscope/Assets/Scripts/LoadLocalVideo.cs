@@ -12,8 +12,8 @@ public class LoadLocalVideo : MonoBehaviour
 
     public string[] videoURLs;
     public VideoPlayer vp;
-    public VideoPlayer vp2;
-    public RenderTexture rt, rt2;
+    //public VideoPlayer vp2;
+    public RenderTexture rt;
     private int currentVideoIndex = -1;
     //[System.NonSerialized] public string latestFile = "";
     //[System.NonSerialized] Texture2D loadedLocalImage;
@@ -22,13 +22,13 @@ public class LoadLocalVideo : MonoBehaviour
     private bool rfidOn = false;
     void Start()
     {
-        if(Display.displays.Length > 1)
-        {
-            for(int i = 0; i < Display.displays.Length; i++)
-            {
-                Display.displays[i].Activate();
-            }
-        }
+        //if(Display.displays.Length > 1)
+        //{
+        //    for(int i = 0; i < Display.displays.Length; i++)
+        //    {
+        //        Display.displays[i].Activate();
+        //    }
+        //}
         InvokeRepeating(nameof(KeepTheIFActive), 1f, 0.5f);
         //get data dir
         Debug.Log($"Local path: {Application.dataPath}");
@@ -140,13 +140,13 @@ public class LoadLocalVideo : MonoBehaviour
     }
     public void PlayVideo2ndScreen()
     {
-        if (vp2.isPlaying)
+        if (vp.isPlaying)
         {
             return;
         }
-        rt2.Release();
-        vp2.url = videoURLs[4];
-        vp2.Play();
+        rt.Release();
+        vp.url = videoURLs[4];
+        vp.Play();
         StartCoroutine(CheckIfVideoStopped_2nd());
     }
 
@@ -166,7 +166,7 @@ public class LoadLocalVideo : MonoBehaviour
     IEnumerator CheckIfVideoStopped_2nd()
     {
         yield return new WaitForSeconds(1);
-        if (vp2.isPlaying)
+        if (vp.isPlaying)
         {
             StartCoroutine(CheckIfVideoStopped_2nd());
         }
@@ -180,9 +180,7 @@ public class LoadLocalVideo : MonoBehaviour
     public void StopVideoAnytime()
     {
         vp.Stop();
-        vp2.Stop();
         rt.Release();
-        rt2.Release();
        
     }
 
