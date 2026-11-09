@@ -15,28 +15,19 @@ public class LoadLocalVideo : MonoBehaviour
     //public VideoPlayer vp2;
     public RenderTexture rt;
     private int currentVideoIndex = -1;
-    //[System.NonSerialized] public string latestFile = "";
-    //[System.NonSerialized] Texture2D loadedLocalImage;
     [SerializeField] Image backgroundImage;
     public TMP_InputField rfid_IF;
     private bool rfidOn = false;
+
+    public string[] rfidCards;
     void Start()
     {
-        //if(Display.displays.Length > 1)
-        //{
-        //    for(int i = 0; i < Display.displays.Length; i++)
-        //    {
-        //        Display.displays[i].Activate();
-        //    }
-        //}
         InvokeRepeating(nameof(KeepTheIFActive), 1f, 0.5f);
-        //get data dir
         Debug.Log($"Local path: {Application.dataPath}");
+
+        ReadRFIDFile();
         GetVideosFromLocal();
-        //CheckIfAnyBGPhoto();
-        StopVideoAnytime();
-        //KeepTheIFActive();
-        
+        StopVideoAnytime();        
     }
 
     void GetVideosFromLocal()
@@ -50,6 +41,32 @@ public class LoadLocalVideo : MonoBehaviour
             {
                 videoURLs[i] = avDir;
             }
+        }
+    }
+
+    void ReadRFIDFile()
+    {
+        string filePath = Path.Combine(Application.dataPath, "RFID/rfid.txt");
+
+        if (File.Exists(filePath))
+        {
+            string[] lines = File.ReadAllLines(filePath);
+
+            rfidCards = lines
+                .Where(line => !string.IsNullOrWhiteSpace(line))
+                .Take(6)
+                .ToArray();
+
+            Debug.Log($"Loaded {rfidCards.Length} RFID strings.");
+
+            foreach (string rfid in rfidCards)
+            {
+                Debug.Log(rfid);
+            }
+        }
+        else
+        {
+            Debug.LogError("RFID file not found: " + filePath);
         }
     }
 
@@ -87,38 +104,33 @@ public class LoadLocalVideo : MonoBehaviour
 
     public void CheckInputField()
     {
-        //AV 1 - 0005045699
-        //AV 2 - 0005045708
-        //AV 3 - 0014051688
-        //AV 4 - 0014045036
-        //AV 5 - 0014043586
-        //Reset - 0014063020
 
         if(rfid_IF.text.Length == 10)
         {
             Debug.Log("rfid: " + rfid_IF.text);
             string rfid = rfid_IF.text;
-            if (rfid == "0005045699")
+
+            if (rfid == rfidCards[0])
             {
                 PlayVideo(0);
             }
-            else if(rfid == "0005045708")
+            else if(rfid == rfidCards[1])
             {
                 PlayVideo(1);
             }
-            else if (rfid == "0014051688")
+            else if (rfid == rfidCards[2])
             {
                 PlayVideo(2);
             }
-            else if (rfid == "0014045036")
+            else if (rfid == rfidCards[3])
             {
                 PlayVideo(3);
             }
-            else if (rfid == "0014043586")
+            else if (rfid == rfidCards[4])
             {
                 PlayVideo2ndScreen();
             }
-            else if(rfid == "0014063020")
+            else if(rfid == rfidCards[5])
             {
                 StopVideoAnytime();
             }
